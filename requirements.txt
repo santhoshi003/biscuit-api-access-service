@@ -1,0 +1,5 @@
+fastapi>=0.107.0
+uvicorn[standard]>=0.23.0
+eth-account>=0.13.7
+python-dotenv>=1.2.2
+biscuit-python @ git+https://github.com/biscuit-auth/biscuit-python.git
