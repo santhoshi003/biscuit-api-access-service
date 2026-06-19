@@ -1,0 +1,44 @@
+name: Publish documentation
+
+on:
+  push:
+    branches: [ "main" ]
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+    - name: Set up Python 3.10
+      uses: actions/setup-python@v3
+      with:
+        python-version: "3.10"
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements-dev.txt
+    - name: Build/install library
+      run: |
+        maturin build
+        pip install target/wheels/*.whl
+    - name: Test with pytest
+      run: |
+        pytest
+    - name: Build documentation
+      run: |
+        pip install sphinx sphinx-rtd-theme
+        make -C docs doctest
+        make -C docs html
+    - name: Publish documentation
+      run: |
+        zip -r biscuit-python.zip docs/_build/html
+        curl -H "Content-Type: application/zip" \
+             -H "Authorization: Bearer ${{ secrets.NETLIFY_TOKEN }}" \
+             --fail-with-body \
+             --data-binary @biscuit-python.zip \
+             https://api.netlify.com/api/v1/sites/biscuit-python.netlify.app/deploys

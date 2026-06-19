@@ -1,0 +1,16 @@
+[project]
+name="biscuit-python"
+description="Python bindings for the biscuit auth platform"
+readme="README.md"
+license= { file = "LICENSE" }
+dynamic = ["version"]
+
+[project.urls]
+homepage = "https://biscuitsec.org/usage/python"
+documentation = "https://python.biscuitsec.org"
+repository = "https://github.com/biscuit-auth/biscuit-python"
+changelog = "https://github.com/biscuit-auth/biscuit-python/blob/main/CHANGELOG.md"
+
+[build-system]
+requires = ["maturin>=1.0,<2.0"]
+build-backend = "maturin"
